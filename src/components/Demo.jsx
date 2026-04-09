@@ -54,9 +54,9 @@ function AnimatedBackground() {
 
 // ==========================================
 // GLOWING RANGE SLIDER COMPONENT
+// Now accepts value and onChange as props!
 // ==========================================
-function GlowingRangeSlider() {
-    const [value, setValue] = useState(50);
+function GlowingRangeSlider({ value, onChange }) {
     const [isDragging, setIsDragging] = useState(false);
     const trackRef = useRef(null);
 
@@ -66,7 +66,7 @@ function GlowingRangeSlider() {
         let x = clientX - rect.left;
         x = Math.max(0, Math.min(x, rect.width));
         const percentage = Math.round((x / rect.width) * 100);
-        setValue(percentage);
+        onChange(percentage);
     };
 
     const onMouseMove = (e) => handleMove(e.clientX);
@@ -133,9 +133,16 @@ export default function Demo() {
     const [selectedModel, setSelectedModel] = useState('best');
     const [isDownloadOpen, setIsDownloadOpen] = useState(false);
     const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
+    
+    // NEW: Lifted Slider State
+    const [sliderValue, setSliderValue] = useState(50);
 
     const downloadRef = useRef(null);
     const modelDropdownRef = useRef(null);
+
+    // DEMO IMAGES: Replace these with your backend image URLs later!
+    const demoOriginalImage = "https://images.unsplash.com/photo-1558244661-d248897f7bc4?auto=format&fit=crop&w=1200&q=80"; 
+    const demoSegmentedImage = "https://images.unsplash.com/photo-1558244661-d248897f7bc4?auto=format&fit=crop&w=1200&q=80&sat=-100&blend=a855f7&blend-mode=screen"; 
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -151,13 +158,11 @@ export default function Demo() {
         setAppState('processing');
         let currentProgress = 0;
 
-        // Simulate a backend processing delay
         const interval = setInterval(() => {
-            currentProgress += Math.floor(Math.random() * 15) + 5; // Random jumps between 5 and 20
+            currentProgress += Math.floor(Math.random() * 15) + 5;
             if (currentProgress >= 100) {
                 currentProgress = 100;
                 clearInterval(interval);
-                // Slight delay at 100% before revealing results for smoother UX
                 setTimeout(() => setAppState('results'), 500);
             }
             setProgress(currentProgress);
@@ -174,7 +179,6 @@ export default function Demo() {
     return (
         <section id="demo" className="demo-section">
 
-            {/* The Animated Energy Ribbon Background */}
             <AnimatedBackground />
 
             <h2 className="section-title">Try it Yourself</h2>
@@ -182,7 +186,6 @@ export default function Demo() {
             {/* ================= PHASE 1: UPLOAD VIEW ================= */}
             {appState === 'upload' && (
                 <div className="upload-container glass-panel">
-                    {/* Model Selection Tabs */}
                     <div className="upload-tabs">
                         {MODELS.map(m => (
                             <button
@@ -195,7 +198,6 @@ export default function Demo() {
                         ))}
                     </div>
 
-                    {/* Drag and Drop Zone */}
                     <div className="drag-drop-outer" onClick={handleUpload}>
                         <div className="drag-drop-inner">
                             <svg className="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -207,7 +209,6 @@ export default function Demo() {
                         </div>
                     </div>
 
-                    {/* Upload Actions */}
                     <div className="upload-actions">
                         <button className="neon-cyan-btn" onClick={handleUpload}>Upload image</button>
                         <button className="neon-cyan-btn" onClick={handleUpload}>Upload Folder</button>
@@ -237,8 +238,9 @@ export default function Demo() {
             {appState === 'results' && (
                 <div className="demo-results-fade-in">
                     <div className="demo-grid">
+                        
                         {/* ================= MAIN RENDER PANEL ================= */}
-                        <div className="glass-panel">
+                        <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column' }}>
                             <div className="toolbar">
                                 <div className="view-controls">
                                     {['original', 'predicted mask', 'overlay'].map((v) => (
@@ -294,8 +296,39 @@ export default function Demo() {
                                     )}
                                 </div>
                             </div>
-                            <div className="render-area tech-font">
-                                <span style={{ opacity: 0.5, letterSpacing: '2px' }}>[ {view.toUpperCase()} RENDER ]</span>
+                            
+                            {/* NEW: Interactive Render Area using clip-path */}
+                            <div className="render-area" style={{ position: 'relative', overflow: 'hidden', flex: 1, padding: 0 }}>
+                                
+                                {/* Base Image (Original) */}
+                                <img 
+                                    src={demoOriginalImage} 
+                                    alt="Original" 
+                                    style={{ 
+                                        position: 'absolute', width: '100%', height: '100%', objectFit: 'cover', 
+                                        opacity: view === 'predicted mask' ? 0 : 1, transition: 'opacity 0.3s ease'
+                                    }} 
+                                />
+
+                                {/* Overlay Image (Segmented) controlled by the clip-path */}
+                                <img 
+                                    src={demoSegmentedImage} 
+                                    alt="Segmented Mask" 
+                                    style={{ 
+                                        position: 'absolute', width: '100%', height: '100%', objectFit: 'cover',
+                                        opacity: view === 'original' ? 0 : 1, transition: 'opacity 0.3s ease',
+                                        clipPath: view === 'overlay' ? `inset(0 ${100 - sliderValue}% 0 0)` : 'inset(0 0 0 0)'
+                                    }} 
+                                />
+
+                                {/* Vertical dividing line synced to the slider (Only shows in 'overlay' mode) */}
+                                {view === 'overlay' && (
+                                    <div style={{
+                                        position: 'absolute', top: 0, bottom: 0, left: `${sliderValue}%`,
+                                        width: '2px', backgroundColor: 'var(--accent-neon)', 
+                                        boxShadow: '0 0 10px var(--accent-neon)', transform: 'translateX(-50%)', pointerEvents: 'none'
+                                    }}></div>
+                                )}
                             </div>
                         </div>
 
@@ -377,12 +410,13 @@ export default function Demo() {
                     </div>
 
                     {/* ================= GLOWING RANGE SLIDER ================= */}
-                    <GlowingRangeSlider />
+                    {/* We pass the shared state down to the slider so they sync up perfectly */}
+                    <GlowingRangeSlider value={sliderValue} onChange={setSliderValue} />
 
                     {/* ================= PERFORMANCE METRICS SECTION ================= */}
                     <div className="glass-panel metrics-panel" style={{ marginTop: '2rem' }}>
                         <div className="panel-header" style={{ marginBottom: '1.5rem' }}>Evaluation Metrics</div>
-
+                        
                         <div className="metrics-grid">
                             <div className="kpi-container">
                                 <div className="kpi-card">
@@ -420,6 +454,7 @@ export default function Demo() {
                                     ))}
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
