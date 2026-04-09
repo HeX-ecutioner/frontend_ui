@@ -1,0 +1,566 @@
+/* =========================================
+   GLOBAL PROJECT STYLES (Scrollbar & Smoothness)
+   ========================================= */
+
+/* 1. Fixes the awkward jumping - makes all scrolls slow and smooth */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 2. Custom Scrollbar Styling (Webkit Browsers: Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 10px;
+    /* Width of the entire scrollbar */
+}
+
+/* The background track of the scrollbar */
+::-webkit-scrollbar-track {
+    background: #0b0518;
+    /* Matches your deep dark background */
+}
+
+/* The draggable handle */
+::-webkit-scrollbar-thumb {
+    background: var(--accent-neon, #a855f7);
+    /* Your purple neon theme */
+    border-radius: 10px;
+    border: 2px solid #0b0518;
+    /* Creates a padding effect around the thumb */
+    box-shadow: 0 0 5px var(--accent-neon);
+}
+
+/* Hover effect on the scrollbar handle */
+::-webkit-scrollbar-thumb:hover {
+    background: #c084fc;
+    /* Slightly lighter purple on hover */
+    box-shadow: 0 0 10px #c084fc;
+}
+
+/* Firefox Support */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-neon) #0b0518;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    letter-spacing: -1px;
+    color: white;
+    /* Added to ensure visibility against dark bg */
+}
+
+/* Make sure the main section is transparent so the background shows through */
+.demo-section {
+    padding: 5rem 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    background-color: transparent;
+    position: relative;
+    min-height: 100vh;
+    /* Ensure it covers full screen if content is small */
+}
+
+.demo-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.glass-panel {
+    background: var(--bg-card, rgba(30, 41, 59, 0.4));
+    border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.toolbar {
+    padding: 1.2rem;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+}
+
+.view-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-btn {
+    background: transparent;
+    color: var(--text-muted, #94a3b8);
+    border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.view-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.view-btn.active {
+    background: var(--accent-neon, #a855f7);
+    color: white;
+    border-color: var(--accent-neon, #a855f7);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+.render-area {
+    aspect-ratio: 16/9;
+    background: #05020a;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #334155;
+}
+
+.sidebar-panel {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.panel-header {
+    font-size: 0.8rem;
+    color: var(--text-muted, #94a3b8);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.class-row {
+    margin-bottom: 1.2rem;
+}
+
+.class-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+}
+
+.bar-track {
+    background: rgba(255, 255, 255, 0.05);
+    height: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* --- Metrics Section Additions --- */
+.metrics-panel {
+    padding: 2rem;
+}
+
+.metrics-grid {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+/* 4-column grid for KPIs */
+.kpi-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.kpi-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle, #334155);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    color: var(--text-muted, #94a3b8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.kpi-subtext {
+    font-size: 0.75rem;
+    color: var(--text-muted, #94a3b8);
+    margin-top: 0.25rem;
+    opacity: 0.7;
+}
+
+/* Text Gradient for the main metric */
+.text-gradient {
+    background: linear-gradient(to right, #a855f7, #ec4899);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.per-class-container {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-subtle, #334155);
+}
+
+.per-class-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Responsive fix for smaller screens */
+@media (max-width: 900px) {
+    .metrics-grid {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .kpi-container {
+        width: 100%;
+    }
+
+    .per-class-container {
+        width: 100%;
+    }
+
+    .demo-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
+   ANIMATED RIBBON BACKGROUND (NEW)
+   ========================================= */
+
+.ribbon-background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    /* Puts it behind everything */
+    background-color: #0b0518;
+    /* Deep dark violet/black space */
+    overflow: hidden;
+    pointer-events: none;
+    /* User clicks pass through */
+}
+
+/* Base style for the energy waves */
+.ribbon-wave {
+    position: absolute;
+    filter: blur(80px);
+    /* Heavy blur to make it look like light, not a solid object */
+    opacity: 0.6;
+}
+
+/* Top Purple Ribbon */
+.ribbon-1 {
+    top: -10%;
+    left: -20%;
+    width: 140vw;
+    height: 40vh;
+    background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), rgba(99, 102, 241, 0.3), transparent);
+    transform: rotate(-15deg);
+    animation: flowWave1 18s infinite ease-in-out alternate;
+}
+
+/* Bottom Pink/Magenta Ribbon */
+.ribbon-2 {
+    bottom: -10%;
+    right: -20%;
+    width: 120vw;
+    height: 35vh;
+    background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.4), rgba(168, 85, 247, 0.3), transparent);
+    transform: rotate(20deg);
+    animation: flowWave2 22s infinite ease-in-out alternate-reverse;
+}
+
+/* Subtle Cyan highlight floating through the middle */
+.ribbon-3 {
+    top: 30%;
+    left: 10%;
+    width: 80vw;
+    height: 25vh;
+    background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.2), transparent);
+    transform: rotate(-5deg);
+    animation: flowWave3 25s infinite ease-in-out alternate;
+}
+
+/* Animations for the ribbons drifting slowly */
+@keyframes flowWave1 {
+    0% {
+        transform: translateY(0) rotate(-15deg) scaleY(1);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: translateY(50px) rotate(-10deg) scaleY(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: translateY(-30px) rotate(-18deg) scaleY(0.9);
+        opacity: 0.5;
+    }
+}
+
+@keyframes flowWave2 {
+    0% {
+        transform: translateX(0) rotate(20deg) scaleY(1);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: translateX(-80px) rotate(15deg) scaleY(1.3);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateX(40px) rotate(22deg) scaleY(0.8);
+        opacity: 0.5;
+    }
+}
+
+@keyframes flowWave3 {
+    0% {
+        transform: translate(0, 0) rotate(-5deg);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: translate(100px, 100px) rotate(5deg);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translate(-50px, -50px) rotate(-10deg);
+        opacity: 0.3;
+    }
+}
+
+/* =========================================
+   UPLOAD INTERFACE STYLES (NEW)
+   ========================================= */
+
+.upload-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(11, 5, 24, 0.6);
+    /* Slightly darker for the upload area */
+}
+
+/* Tabs */
+.upload-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    border-radius: 50px;
+}
+
+.upload-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted, #94a3b8);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-tab.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Drag and Drop Zone */
+.drag-drop-outer {
+    width: 100%;
+    max-width: 700px;
+    height: 300px;
+    border: 2px dashed #0ea5e9;
+    /* Cyan dashed border */
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(14, 165, 233, 0.02);
+}
+
+.drag-drop-outer:hover {
+    background: rgba(14, 165, 233, 0.05);
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
+}
+
+.drag-drop-inner {
+    width: 250px;
+    height: 120px;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.upload-icon {
+    width: 40px;
+    height: 40px;
+    color: #0ea5e9;
+    /* Cyan */
+}
+
+.drag-drop-inner p {
+    color: white;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+/* Upload Buttons */
+.upload-actions {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.neon-cyan-btn {
+    background: #0ea5e9;
+    /* Bright Cyan */
+    color: #05020a;
+    /* Dark text for contrast */
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    transition: all 0.2s ease;
+}
+
+.neon-cyan-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(14, 165, 233, 0.8);
+    background: #38bdf8;
+}
+
+/* =========================================
+   PROCESSING VIEW STYLES (NEW)
+   ========================================= */
+
+.processing-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.processing-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(168, 85, 247, 0.2);
+    border-top-color: var(--accent-neon, #a855f7);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 2rem;
+}
+
+.progress-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, var(--accent-neon, #a855f7));
+    border-radius: 10px;
+    transition: width 0.3s ease-out;
+    box-shadow: 0 0 10px var(--accent-neon, #a855f7);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Smooth fade in for results */
+.demo-results-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

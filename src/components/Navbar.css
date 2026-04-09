@@ -1,0 +1,104 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 1000;
+    background: rgba(11, 5, 24, 0.7); /* Translucent dark background */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-container {
+    width: 100%;
+    max-width: 1400px;
+    padding: 0 2.5rem;
+    display: flex;
+    justify-content: space-between; /* Pushes brand to left, menu to right */
+    align-items: center;
+}
+
+/* --- Brand/Logo Styling --- */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover {
+    transform: translateY(-1px);
+}
+
+.eye-icon {
+    color: var(--accent-neon, #a855f7);
+    filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+}
+
+.logo-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #fff;
+    /* Optional: subtle gradient for the logo text */
+    background: linear-gradient(to right, #fff, #a855f7);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- Menu/Links Styling --- */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* Spacing between links */
+}
+
+.nav-link {
+    background: transparent;
+    border: none;
+    color: var(--text-muted, #94a3b8);
+    font-size: 1.31rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #fff;
+}
+
+/* Underline effect on hover */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-neon, #a855f7);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px var(--accent-neon);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 768px) {
+    .nav-menu {
+        gap: 1rem;
+    }
+    .logo-text {
+        display: none; /* Only show Eye icon on mobile to save space */
+    }
+}
